@@ -16,6 +16,8 @@ Apparently, to make it a client a component, you put "client component"; at the 
 
 **pro tip, when styling an element and using JSX, just create a 'style = {[key] : [value]}' tag so it can read it properly
 
+the 'onLoad' tag wasn't working for me either, so I used....
+
 # GoogleCalendarAPI
 
 I set up the Google project to accept requests from the 'https://cafe-monet-display.vercel.app' URI, but who knows if it is actually going to work from there. I want to see how the redirect works, and if I can get multiple users permission to use the project and therefore get access to the Google Calendar API

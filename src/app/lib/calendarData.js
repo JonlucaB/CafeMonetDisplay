@@ -42,6 +42,7 @@ export default function SignOnButtons() {
      */
     function gapiLoaded() {
         gapi.load('client', initializeGapiClient);
+        console.log("loaded the GAPI heyyy");
     }
 
     /**
@@ -68,28 +69,29 @@ export default function SignOnButtons() {
         });
         gisInited = true;
         updateVisibility
+        console.log("loaded the GIS heyyy");
     }
 
     /**
      *  Sign in the user upon button click.
      */
     function handleAuthClick() {
-    tokenClient.callback = async (resp) => {
-        if (resp.error !== undefined) {
-        throw (resp);
-        }
-        updateAuthorizeButtonText('Refresh');
-        await listUpcomingEvents();
-    };
+        tokenClient.callback = async (resp) => {
+            if (resp.error !== undefined) {
+            throw (resp);
+            }
+            updateAuthorizeButtonText('Refresh');
+            await listUpcomingEvents();
+        };
 
-    if (gapi.client.getToken() === null) {
-        // Prompt the user to select a Google Account and ask for consent to share their data
-        // when establishing a new session.
-        tokenClient.requestAccessToken({prompt: 'consent'});
-    } else {
-        // Skip display of account chooser and consent dialog for an existing session.
-        tokenClient.requestAccessToken({prompt: ''});
-    }
+        if (gapi.client.getToken() === null) {
+            // Prompt the user to select a Google Account and ask for consent to share their data
+            // when establishing a new session.
+            tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+            // Skip display of account chooser and consent dialog for an existing session.
+            tokenClient.requestAccessToken({prompt: ''});
+        }
     }
 
     /**
@@ -144,13 +146,14 @@ export default function SignOnButtons() {
     // gapiInited && gisInited
     return (
         <div>
-            <button id="authorize_button" onclick={handleAuthClick} style={{visibility : {visible}}}>{authorizeButtonText}</button>
-            <button id="signout_button" onclick={handleSignoutClick} style={{visibility : {visible}}}>{signoutButtonText}</button>
+            <button id="authorize_button" onClick={handleAuthClick} style={{visibility : visible}}>{authorizeButtonText}</button>
+            <button id="signout_button" onClick={handleSignoutClick} style={{visibility : visible}}>{signoutButtonText}</button>
 
             <ContentChild data={data} />
 
-            <script async defer src="https://apis.google.com/js/api.js" onload={gapiLoaded}></script>
-            <script async defer src="https://accounts.google.com/gsi/client" onload={gisLoaded}></script>
+            {/* The onLoad here doesn't work. change it */}
+            <script src="https://apis.google.com/js/api.js" onLoad={gapiLoaded}></script>
+            <script src="https://accounts.google.com/gsi/client" onLoad={gisLoaded}></script>
         </div>
     );
 }
