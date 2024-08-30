@@ -2,19 +2,22 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import React from "react";
 import SignOnButtons, {gisLoaded, gapiLoaded} from "./lib/calendarData";
+import dynamic from 'next/dynamic'
+
+const DynamicComponentWithNoSSR = dynamic(
+  () => import('../components/hello3'),
+  { ssr: false }
+)
 
 export default function Home() {
   return (
   <body>
     <p>Google Calendar API Quickstart</p>
 
-    {/* Add buttons to initiate auth sequence and sign out */}
+    {/* Add buttons to initiate auth sequence and sign out. Most of Google's quickstart is in here */}
     <SignOnButtons />
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
-
-    <script async defer src="https://apis.google.com/js/api.js" onload={gapiLoaded}></script>
-    <script async defer src="https://accounts.google.com/gsi/client" onload={gisLoaded}></script>
   </body>
   );
 }

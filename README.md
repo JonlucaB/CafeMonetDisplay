@@ -8,6 +8,8 @@ First, I updated NPM and NodeJS to their latest versions, as I was going to use 
 
 It was extremely easy to set up and integrate with a hobby account, and looks like it won't be difficult to set up in the future!
 
+I learned that Next JS  has server side rendering. When you are using server side rendering there is no browser. Hence, there will not be any variable window or document. Hence this error shows up. This makes it impossible to use 'document.getElementById()' or anything similar. The solution...?
+
 # GoogleCalendarAPI
 
 I set up the Google project to accept requests from the 'https://cafe-monet-display.vercel.app' URI, but who knows if it is actually going to work from there. I want to see how the redirect works, and if I can get multiple users permission to use the project and therefore get access to the Google Calendar API
