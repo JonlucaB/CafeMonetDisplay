@@ -4,11 +4,15 @@ A web app that takes google calendar data and displays it in a table format. Thi
 
 Starting out, we had to create a Google Project and enable the google calendar API on it. Before I was able to finish setting it up, it requested the URI the app would be hosted from (for OAuth 2.0 purposes). Because I hadn't even started this README by that point, I went ahead and began setting everything up.
 
-First, I updated NPM and NodeJS to their latest versions, as I was going to use NextJS to start my react app. Event though NextJS uses NodeJS to render, we can still use NextJS on Github pages if we export the app to a static website (thanks to this blog -> https://www.freecodecamp.org/news/how-to-deploy-next-js-app-to-github-pages/#:~:text=js%20uses%20Node.,static%20page%20generation%20in%20Next.)
+First, I updated NPM and NodeJS to their latest versions, as I was going to use NextJS to start my react app. After realizing I hit my limit on my github pages account, I decided to try something new and went with Vercel.
 
-"GitHub Pages is designed to host static files, which means we can publish only HTML, CSS, JavaScript (and other static files) there. So we'll need to enable static page generation in Next.js."
+It was extremely easy to set up and integrate with a hobby account, and looks like it won't be difficult to set up in the future!
 
-"Now after running next build, Next.js will generate an out folder containing static assets for our application. In the next steps, we will take this directory and upload it to GitHub Pages."
+# GoogleCalendarAPI
+
+I set up the Google project to accept requests from the 'https://cafe-monet-display.vercel.app' URI, but who knows if it is actually going to work from there. I want to see how the redirect works, and if I can get multiple users permission to use the project and therefore get access to the Google Calendar API
+
+
 
 # NextJS Jargon
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
