@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import React from "react";
-import SignOnButtons, {gisLoaded, gapiLoaded} from "./lib/calendarData";
+import SignOnButtons from "./lib/calendarData";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
     {/* Add buttons to initiate auth sequence and sign out. Most of Google's quickstart is in here */}
     <SignOnButtons />
 
-    <pre id="content" style="white-space: pre-wrap;"></pre>
+    <pre id="content" style={{whiteSpace : 'pre-wrap'}}></pre>
   </body>
   );
 }
