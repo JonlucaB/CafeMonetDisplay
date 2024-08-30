@@ -2,12 +2,6 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import React from "react";
 import SignOnButtons, {gisLoaded, gapiLoaded} from "./lib/calendarData";
-import dynamic from 'next/dynamic'
-
-const DynamicComponentWithNoSSR = dynamic(
-  () => import('../components/hello3'),
-  { ssr: false }
-)
 
 export default function Home() {
   return (
