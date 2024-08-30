@@ -8,7 +8,11 @@ First, I updated NPM and NodeJS to their latest versions, as I was going to use 
 
 It was extremely easy to set up and integrate with a hobby account, and looks like it won't be difficult to set up in the future!
 
-I learned that Next JS  has server side rendering. When you are using server side rendering there is no browser. Hence, there will not be any variable window or document. Hence this error shows up. This makes it impossible to use 'document.getElementById()' or anything similar. The solution...?
+I learned that Next JS  has server side rendering. When you are using server side rendering there is no browser. Hence, there will not be any variable window or document. Hence this error shows up. This makes it impossible to use 'document.getElementById()' or anything similar. The solution...? States?
+
+I tried using states at first, but then I ran into issue where I wasn't allowed to use states in server side renderings... In NextJs there's client components and server components, and my sign on buttons are FO SHO client components since they need to render with the client. Not sure the stylistic or major differences between the two, and how to decide between them.
+
+Apparently, to make it a client a component, you put "client component"; at the top of your .js file....
 
 # GoogleCalendarAPI
 

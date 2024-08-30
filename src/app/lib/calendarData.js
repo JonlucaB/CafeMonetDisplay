@@ -1,3 +1,5 @@
+"use client"; // I dub thee, "Client Component The I"
+
 import React, { useState } from 'react';
 
 export default function SignOnButtons() {
