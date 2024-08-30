@@ -144,8 +144,8 @@ export default function SignOnButtons() {
     // gapiInited && gisInited
     return (
         <div>
-            <button id="authorize_button" onclick={handleAuthClick} visibility={visible}>{authorizeButtonText}</button>
-            <button id="signout_button" onclick={handleSignoutClick} visibility={visible}>{signoutButtonText}</button>
+            <button id="authorize_button" onclick={handleAuthClick} style={{visibility : {visible}}}>{authorizeButtonText}</button>
+            <button id="signout_button" onclick={handleSignoutClick} style={{visibility : {visible}}}>{signoutButtonText}</button>
 
             <ContentChild data={data} />
 
