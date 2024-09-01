@@ -18,6 +18,11 @@ Apparently, to make it a client a component, you put "client component"; at the 
 
 the 'onLoad' tag wasn't working for me either, so I used....
 
+
+So I actually just scrapped my whole 'calendarData.jsx' file  because it was just too messy. It wouldn't load those google scripts and I gave up on that, and it turns out OAuth2.0 is easier on my side than OAuth1.0 ever was. I just need to give it a good redirectURL. I got an implementation of it off of this blog on DESCOPE https://www.descope.com/blog/post/oauth2-react-authentication-authorization
+
+
+
 # GoogleCalendarAPI
 
 I set up the Google project to accept requests from the 'https://cafe-monet-display.vercel.app' URI, but who knows if it is actually going to work from there. I want to see how the redirect works, and if I can get multiple users permission to use the project and therefore get access to the Google Calendar API
