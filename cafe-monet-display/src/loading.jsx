@@ -1,3 +1,5 @@
+"use-client";
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -15,18 +17,15 @@ export default function Secure() {
   };
 
   const getCalendars = async (accessToken) => {
+    // we need to trim this request somehow because this returns every event ever lol
     const response = await fetch(
-        'https://www.googleapis.com/calendar/v3/users/me/calendarList', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Accept': 'application/json'
-            }
-        }
+        `https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${accessToken}`
     ).catch(error => console.log(error));
 
-    Cookies.set("calendars", response);
-    navigate("calendars");
+    // make a little loading screen here
+
+    Cookies.set("events", response);
+    navigate("/calendars");
   }
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export default function Secure() {
     }
 
     getUserDetails(accessToken);
-    getCalendarData(accessToken);
+    getCalendars(accessToken);
   }, [navigate]);
 
   return (

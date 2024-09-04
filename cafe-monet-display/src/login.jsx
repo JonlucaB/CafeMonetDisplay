@@ -9,11 +9,12 @@ export default function Login() {
   const [isLoggedin, setIsLoggedin] = useState(false);
 
   const handleClick = () => {
-    const callbackUrl = `https://localhost:3000`;
+    const callbackUrl = `${window.location.origin}`;
     const googleClientId = "902933263655-ri7j71ajih2ming6im024d3k23muscq3.apps.googleusercontent.com";
     const targetUrl = `https://accounts.google.com/o/oauth2/auth?redirect_uri=${encodeURIComponent(
       callbackUrl
-    )}&response_type=token&client_id=${googleClientId}&scope=openid%20email%20profile`;
+    )}&response_type=token&client_id=${googleClientId}&scope=openid%20email%20profile%20https://www.googleapis.com/auth/calendar.events.readonly`;
+    console.log(callbackUrl);
     window.location.href = targetUrl;
   };
 
@@ -30,7 +31,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate("/secure");
+      navigate("/loading");
     }
   }, [isLoggedin, navigate]);
 
