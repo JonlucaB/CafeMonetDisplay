@@ -18,14 +18,17 @@ export default function Secure() {
 
   const getCalendars = async (accessToken) => {
     // we need to trim this request somehow because this returns every event ever lol
-    const response = await fetch(
+    const calendarData = await fetch(
         `https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${accessToken}`
+        // +`%2C`+timeMax+"%3A"+{Today at 8pm in RFC 3339}
+        // +`%2C`+timeMin+"%3A"+{Today at 11ampm in RFC 3339}
     ).catch(error => console.log(error));
 
     // make a little loading screen here
 
-    Cookies.set("events", response);
-    navigate("/calendars");
+    Cookies.set("events", calendarData);
+    console.log(calendarData);
+    navigate("/calendars", {state: calendarData});
   }
 
   useEffect(() => {

@@ -18,6 +18,93 @@ export default function Login() {
     window.location.href = targetUrl;
   };
 
+  const handleTestClick = () => {
+    const calendarData = {
+      "kind": "calendar#events",
+      "etag": "\"p3289gk3d2n4ca0\"",
+      "summary": "Your Calendar Name",
+      "updated": "2024-08-30T12:00:00Z",
+      "timeZone": "America/New_York",
+      "accessRole": "owner",
+      "defaultReminders": [],
+      "items": [
+        {
+          "kind": "calendar#event",
+          "etag": "\"p3245fghrwe214\"",
+          "id": "event1_id",
+          "status": "confirmed",
+          "htmlLink": "https://www.google.com/calendar/event?eid=event1_id",
+          "created": "2024-08-30T00:00:00Z",
+          "updated": "2024-08-30T00:00:00Z",
+          "summary": "Meeting at Table #3",
+          "description": "Discussion with the team.",
+          "location": "Table 1",
+          "start": {
+            "dateTime": "2024-08-30T09:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "end": {
+            "dateTime": "2024-08-30T10:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "recurrence": [],
+          "reminders": {
+            "useDefault": true
+          }
+        },
+        {
+          "kind": "calendar#event",
+          "etag": "\"p3245fghrwe215\"",
+          "id": "event2_id",
+          "status": "confirmed",
+          "htmlLink": "https://www.google.com/calendar/event?eid=event2_id",
+          "created": "2024-08-30T01:00:00Z",
+          "updated": "2024-08-30T01:00:00Z",
+          "summary": "Lunch at Table #7",
+          "description": "Lunch meeting with clients.",
+          "location": "Table 2",
+          "start": {
+            "dateTime": "2024-08-30T12:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "end": {
+            "dateTime": "2024-08-30T13:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "recurrence": [],
+          "reminders": {
+            "useDefault": true
+          }
+        },
+        {
+          "kind": "calendar#event",
+          "etag": "\"p3245fghrwe216\"",
+          "id": "event3_id",
+          "status": "confirmed",
+          "htmlLink": "https://www.google.com/calendar/event?eid=event3_id",
+          "created": "2024-08-30T02:00:00Z",
+          "updated": "2024-08-30T02:00:00Z",
+          "summary": "Project Review at Table #9",
+          "description": "Reviewing the current project status.",
+          "location": "Table 3",
+          "start": {
+            "dateTime": "2024-08-30T15:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "end": {
+            "dateTime": "2024-08-30T16:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "recurrence": [],
+          "reminders": {
+            "useDefault": true
+          }
+        }
+      ]
+    };
+    navigate("/calendars", { state: { calendarData }} );
+  }
+
   useEffect(() => {
     const accessTokenRegex = /access_token=([^&]+)/;
     const isMatch = window.location.href.match(accessTokenRegex);
@@ -38,6 +125,11 @@ export default function Login() {
   return (
     <div className="root">
       <div>
+        <div className="btn-container">
+          <button className="btn btn-primary" onClick={handleTestClick}>
+
+          </button>
+        </div>
         <h1>Log in with Google</h1>
         <div className="btn-container">
           <button className="btn btn-primary" onClick={handleClick}>
