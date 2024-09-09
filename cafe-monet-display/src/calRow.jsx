@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-export default function calColumn(props) {
-    const [timeScale, setTimeScale] = useState(25);
+export default function calRow(props) {
 
     const reservations = props.events;
     const tableNum = props.num;
