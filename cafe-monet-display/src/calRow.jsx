@@ -1,9 +1,31 @@
-import { useState } from "react";
-
 export default function calRow(props) {
 
-    const reservations = props.events;
+    // Events is basically an array full of date arrays of [start, end] and sorted by start date
+    const reservations = props.events.sort((time1, time2) => time1[0] - time2[0]);
+    let slotAvailability = new Map();
     const tableNum = props.num;
+
+    // timeBlock is also the number of cells that will be present in the table
+    const timeBlock = props.timeBlock;
+    const openTime = props.openTime;
+
+    let columns = [<td>Table #{num}</td>];
+
+    for (let m = openTime.getTime() - props.dtM; m < 1200000; m += 15000) {
+        slotAvailability.set(m, "green");
+    }
+
+    reservations.forEach((res) => {
+        if (slotAvailability.has(res[0])) {
+            for (let t = res[0]; t <= res[1]; t += 15000) {
+                slotAvailability.set(t, "red");
+            }
+        } else {
+            // something that shows an error
+        }
+    });
+
+    slotAvailability.values.forEach((color) => columns.push(<td bgColor={color}/>));
     // props => { "calendarEvents" : an Array of arrays that represent reservations with the same table number }
     // So the format is this => [[{startDateTime, endDateTime}]] for a given table number t
     // we will give this functional component the array and that's it, as it does not need to know which table it is
@@ -11,10 +33,5 @@ export default function calRow(props) {
     // make a column cell display of reserved times. We can do it by every 15 minutes...? There should be a way I can
     // make that dynamic and have it render depending on user input
 
-    return (
-        <div>
-            <p>Hellow I am a column for table {tableNum}!</p>
-            <p>I currently have {reservations.length} listings!</p>
-        </div>
-    );
+    return columns;
 }
