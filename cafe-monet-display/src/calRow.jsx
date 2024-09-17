@@ -9,23 +9,27 @@ export default function calRow(props) {
     const timeBlock = props.timeBlock;
     const openTime = props.openTime;
 
-    let columns = [<td>Table #{num}</td>];
+    let columns = [<td>Table #{tableNum}</td>];
 
     for (let m = openTime.getTime() - props.dtM; m < 1200000; m += 15000) {
         slotAvailability.set(m, "green");
+        console.log("Set time "+m+" to green");
     }
 
     reservations.forEach((res) => {
         if (slotAvailability.has(res[0])) {
             for (let t = res[0]; t <= res[1]; t += 15000) {
                 slotAvailability.set(t, "red");
+                console.log("Set time "+t+" to red");
             }
         } else {
-            // something that shows an error
+            console.log("something went wrong with table #"+tableNum);
         }
     });
 
-    slotAvailability.values.forEach((color) => columns.push(<td bgColor={color}/>));
+    // slotAvailability.forEach((_, color) => columns.push(<td bgColor={color}/>));
+    console.log("columns -> "+columns);
+    console.log("slotAvailability -> "+slotAvailability);
     // props => { "calendarEvents" : an Array of arrays that represent reservations with the same table number }
     // So the format is this => [[{startDateTime, endDateTime}]] for a given table number t
     // we will give this functional component the array and that's it, as it does not need to know which table it is
@@ -33,5 +37,5 @@ export default function calRow(props) {
     // make a column cell display of reserved times. We can do it by every 15 minutes...? There should be a way I can
     // make that dynamic and have it render depending on user input
 
-    return columns;
+    return slotAvailability;
 }

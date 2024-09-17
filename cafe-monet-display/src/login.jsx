@@ -34,17 +34,17 @@ export default function Login() {
           "id": "event1_id",
           "status": "confirmed",
           "htmlLink": "https://www.google.com/calendar/event?eid=event1_id",
-          "created": "2024-08-30T00:00:00Z",
-          "updated": "2024-08-30T00:00:00Z",
+          "created": "2024-09-17T00:00:00Z",
+          "updated": "2024-09-17T00:00:00Z",
           "summary": "Meeting at Table #3",
           "description": "Discussion with the team.",
           "location": "Table 1",
           "start": {
-            "dateTime": "2024-08-30T09:00:00-04:00",
+            "dateTime": "2024-09-17T14:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-08-30T10:00:00-04:00",
+            "dateTime": "2024-09-17T16:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -64,11 +64,11 @@ export default function Login() {
           "description": "Lunch meeting with clients.",
           "location": "Table 2",
           "start": {
-            "dateTime": "2024-08-30T12:00:00-04:00",
+            "dateTime": "2024-09-17T12:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-08-30T13:00:00-04:00",
+            "dateTime": "2024-09-17T13:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -88,11 +88,35 @@ export default function Login() {
           "description": "Reviewing the current project status.",
           "location": "Table 3",
           "start": {
-            "dateTime": "2024-08-30T15:00:00-04:00",
+            "dateTime": "2024-09-17T15:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-08-30T16:00:00-04:00",
+            "dateTime": "2024-09-17T16:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "recurrence": [],
+          "reminders": {
+            "useDefault": true
+          }
+        },
+        {
+          "kind": "calendar#event",
+          "etag": "\"p3245fghrwe216\"",
+          "id": "event3_id",
+          "status": "confirmed",
+          "htmlLink": "https://www.google.com/calendar/event?eid=event3_id",
+          "created": "2024-08-30T02:00:00Z",
+          "updated": "2024-08-30T02:00:00Z",
+          "summary": "Project Review at Table #9",
+          "description": "Reviewing the current project status.",
+          "location": "Table 8",
+          "start": {
+            "dateTime": "2024-09-17T15:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "end": {
+            "dateTime": "2024-09-17T18:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],

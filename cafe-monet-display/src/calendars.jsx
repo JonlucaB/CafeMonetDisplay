@@ -2,109 +2,140 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-function GenerateCalColumns(props) {
-    // The logic for calculating the date is wrong but it does display a table with date headers! Woo hoo!
-    const tables = props.tables;
-    // The 540 number will change when we add in which date it is. This is how many minute between 11 - 20
-    const timeBlock = parseInt(540/props.timeScale);
-    const openTime = new Date(0, 0, 0, 11, 0);
-    let tbody = [];
-    let headers = [<th />];
+const addMinutes = (date, minutes) => new Date(new Date(date).getTime() + (minutes * 60000));
 
-    const addMinutes = (date, minutes) => new Date(date.getTime() + minutes*60000);
+function GenerateCalColumns(props) {
+    const [isLoading, setIsLoading] = useState(true);
+    const [tbody, setTbody] = useState([]);
+    const tables = props.tables;
+    const openTime = new Date(); // 11:00 AM
+    openTime.setHours(11, 0, 0, 0); // we set the time to 11:00 AM
+    let headers = [<th key="header-empty" />];
 
     for (let i = 0; i <= 540; i += 15) {
         let currentTime = addMinutes(openTime, i);
-        
-        headers.push(<th>{currentTime.toLocaleTimeString(navigator.language, {
-            hour : '2-digit',
-            minute : '2-digit'
-        })}</th>)
+        headers.push(
+            <th key={`header-${i}`}>
+                {currentTime.toLocaleTimeString(navigator.language, {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}
+            </th>
+        );
     }
 
-    for (let i = 1; i < 10; i++) {
-        if (!tables.has(i)) {
-            // navigate to error page
-            console.log("Oh no! an error on Calendar line 28");
+    useEffect(() => {
+        setIsLoading(true);
+        let newRows = [];
+
+        for (let i = 1; i < 10; i++) {
+            let colors;
+            if (tables.has(i)) {
+                // If there are reservations for the table
+                colors = props.rowGenerator(tables.get(i), openTime);
+            } else {
+                // If there are no reservations for the table
+                console.log("There were no reservations for Table #" + i);
+                colors = props.rowGenerator([], openTime);
+            }
+
+            const newRow = (
+                <tr key={i}>
+                    <td>Table #{i}</td>
+                    {colors.map((color, index) => (
+                        <td key={index} style={{ backgroundColor: color }}></td>
+                    ))}
+                </tr>
+            );
+            newRows.push(newRow);
         }
 
-        tbody.push(<calRow num={i} events={tables.get(i)} timeBlock={timeBlock} openTime={openTime} dtm={props.dtM}/>);
-        console.log("added a calRow to tbody");
-    }
+        setTbody(newRows);
+        setIsLoading(false);
+    }, [props.tables]);
 
     return (
         <table>
-            <tr>
-                {headers}
-                {tbody.length != 9 ? <p>Loading!</p> : tbody}
-            </tr>
+            <thead>
+                <tr>{headers}</tr>
+            </thead>
+            <tbody>
+                {!isLoading ? tbody : <tr><td colSpan={headers.length}>Loading!</td></tr>}
+            </tbody>
         </table>
-    )
+    );
 }
 
 export default function Calendars() {
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
-    const [progress, setProgress] = useState(0.0);
     const [tables, setTables] = useState(new Map());
-    const [timeScale, setTimeScale] = useState(15);
-    
-    // Get the current date time at midnight
-    const currentDateTime = new Date(); 
-    currentDateTime.setHours(0,0,0,0);
-    const currentDateTimeMidnight = currentDateTime.getTime();
 
-    let tableDisplay;
+    function generateRowColors(events, openTime) {
+        let slotAvailability = new Map();
+
+        for (let m = 0; m < 540; m += 15) {
+            let currentTime = addMinutes(openTime, m);
+            slotAvailability.set(currentTime.getTime(), "green");
+        }
+
+        if (events) {
+            const reservations = events.sort((a, b) => a[0] - b[0]);
+            reservations.forEach((res) => {
+                const start = new Date((res[0] - (res[0] % 900000)) + 3600000);
+                const end = new Date(res[1] + (res[1] % 900000) + 3600000);
+                for (let t = start; t <= end; t = addMinutes(t, 15)) {
+                    console.log("Time "+t.toLocaleTimeString(navigator.language, {
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    })+" set to red");
+                    slotAvailability.set(t.getTime(), "red");
+                }
+            });
+        }
+
+        return [...slotAvailability.values()];
+    }
 
     useEffect(() => {
         setIsLoading(true);
-        console.log(location.state.calendarData);
         let data = location.state.calendarData.items;
-        const progressByPop = 100.0/data.length;
+        const progressByPop = 100.0 / data.length;
         let tempTables = new Map();
 
         try {
             while (data.length) {
                 const event = data.pop();
-                console.log("new event popped: ", event);
-        
                 const tableMatch = event.location.match(/Table (\d+)/);
                 if (!tableMatch) {
                     console.error("No table number found in event summary:", event.summary);
                     continue;
                 }
-        
+
                 const tableNumber = parseInt(tableMatch[1], 10);
-        
-                // Update the table in the tables map with the event. idk what to do with it
+
                 if (!tempTables.has(tableNumber)) {
                     tempTables.set(tableNumber, []);
                 }
-        
-                tempTables.get(tableNumber).push([Date.parse(event.start.dateTime - currentDateTimeMidnight - (event.start.datetime%15000)), Date.parse(event.end.dateTime - currentDateTimeMidnight + (event.end.dateTime%15000))]);
-                setProgress(progress => progress + progressByPop);
+
+                tempTables.get(tableNumber).push([
+                    new Date(event.start.dateTime).getTime(),
+                    new Date(event.end.dateTime).getTime()
+                ]);
             }
-            tableDisplay = [];
+
             setTables(tempTables);
-            setIsLoading(!tempTables);
-        } catch {
-            // something that displays an error here, like an error page
+            setIsLoading(false);
+        } catch (error) {
+            console.error("Error loading events:", error);
         }
     }, [location.state.calendarData]);
 
-    if (tables.length) {
-        for (let i = 1; i < 10; i++) {
-            tableDisplay.push(<calColumn num={i} events={tables.get(i)} />);
-            console.log("added event to display");
-        }
-    }
-
     return (
         <div>
-            <p>Hello Events!</p>
-            <div>
-                {isLoading ? <progress value={progress} maxValue={100}>{progress}%</progress> : <GenerateCalColumns timeScale={timeScale} tables={tables} dtM={currentDateTimeMidnight}/>}
-            </div>
+            {isLoading ? <p>Loading...</p> : <GenerateCalColumns tables={tables} rowGenerator={generateRowColors} />}
         </div>
     );
 }
