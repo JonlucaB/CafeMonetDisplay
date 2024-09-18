@@ -1,7 +1,6 @@
 "use-client";
 
 import { useEffect, useState } from "react";
-import ActivityIndicator from "react-native";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -16,7 +15,7 @@ function ISODateString(d){
 
 export default function Loading() {
   const navigate = useNavigate();
-  const [calendarId, setCalendarId] = useState("");
+  const [calendarId, setCalendarId] = useState();
   const [calendarList, setCalendarList] = useState([]);
 
   const getCalendarData = async (accessToken, calID) => {
@@ -32,6 +31,7 @@ export default function Loading() {
 
     Cookies.set("events", calendarData);
     console.log(calendarData);
+    Cookies.set("calendarId", calendarId);
     navigate("/calendars", {state: calendarData});
   }
 
@@ -43,18 +43,12 @@ export default function Loading() {
 
     while(calendarListData) {
       let newCal = calendarListData.pop();
-      let newCalButton = <Button
+      let newCalButton = <button
         onClick={() => setCalendarId(newCal.id)}
         className="calendarButton"
-        ViewComponent={LinearGradient} // Don't forget this!
-        linearGradientProps={{
-          colors: ["#FF9800", "#F44336"],
-          start: { x: 0, y: 0.5 },
-          end: { x: 1, y: 0.5 },
-        }}
         >
           {newCal.summary}
-        </Button>;
+        </button>;
       
       tempCalendarList.push(newCalButton);
     }
@@ -62,25 +56,22 @@ export default function Loading() {
     setCalendarList(tempCalendarList);
   }
 
-
-
+  // for getting the calendar list
   useEffect(() => {
-    getCalendarData(accessToken, calendarId)
-  }, [calendarId])
-
-  useEffect(() => {
+    setCalendarId(Cookies.get("calendarId"));
     const accessToken = Cookies.get("access_token");
-
     if (!accessToken) {
       navigate("/");
+    } else if (!calendarId) {
+      getCalendarList(accessToken);
+    } else {
+      getCalendarData(accessToken, calendarId);
     }
-
-    getCalendarList(accessToken);
-  }, [navigate]);
+  }, [navigate, calendarId]);
 
   return (
     <>
-      {!calendarList ? <ActivityIndicator size="large" color="#ffc4e4" /> : calendarList}
+      {!calendarList || calendarId == "" ? <p>Loading...</p> : calendarList}
     </>
   );
 }
