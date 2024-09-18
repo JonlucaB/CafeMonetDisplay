@@ -41,8 +41,8 @@ export default function Loading() {
       `https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=${accessToken}`
     ).catch(error => console.log(error));
 
-    while(calendarListData) {
-      let newCal = calendarListData.pop();
+    while(calendarListData.items) {
+      let newCal = calendarListData.items.pop();
       let newCalButton = <button
         onClick={() => setCalendarId(newCal.id)}
         className="calendarButton"
