@@ -1,35 +1,72 @@
 "use-client";
 
 import { useEffect, useState } from "react";
+import ActivityIndicator from "react-native";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
-export default function Secure() {
+function ISODateString(d){
+  function pad(n){return n<10 ? '0'+n : n}
+  return d.getUTCFullYear()+'-'
+       + pad(d.getUTCMonth()+1)+'-'
+       + pad(d.getUTCDate())+'T'
+       + pad(d.getUTCHours())+':'
+       + pad(d.getUTCMinutes())+':'
+       + pad(d.getUTCSeconds())+'Z'}
+
+export default function Loading() {
   const navigate = useNavigate();
-  const [userDetails, setUserDetails] = useState({});
+  const [calendarId, setCalendarId] = useState("");
+  const [calendarList, setCalendarList] = useState([]);
 
-  const getUserDetails = async (accessToken) => {
-    const response = await fetch(
-      `https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${accessToken}`
-    );
-    const data = await response.json();
-    setUserDetails(data);
-  };
-
-  const getCalendars = async (accessToken) => {
-    // we need to trim this request somehow because this returns every event ever lol
+  const getCalendarData = async (accessToken, calID) => {
+    const timeMin = new Date();
+    const timeMax = new Date();
+    timeMin.setHours(11, 0, 0, 0);
+    timeMax.setHours(20, 0, 0, 0);
     const calendarData = await fetch(
-        `https://www.googleapis.com/calendar/v3/calendars/primary/events?access_token=${accessToken}`
-        // +`%2C`+timeMax+"%3A"+{Today at 8pm in RFC 3339}
-        // +`%2C`+timeMin+"%3A"+{Today at 11ampm in RFC 3339}
+        `https://www.googleapis.com/calendar/v3/calendars/${calID}]/events?access_token=${accessToken}`
+        +`%2C`+ISODateString(timeMax)+"%3A"
+        +`%2C`+ISODateString(timeMin)+"%3A"
     ).catch(error => console.log(error));
-
-    // make a little loading screen here
 
     Cookies.set("events", calendarData);
     console.log(calendarData);
     navigate("/calendars", {state: calendarData});
   }
+
+  const getCalendarList = async (accessToken) => {
+    const tempCalendarList = [];
+    const calendarListData = await fetch(
+      `https://www.googleapis.com/calendar/v3/users/me/calendarList?access_token=${accessToken}`
+    ).catch(error => console.log(error));
+
+    while(calendarListData) {
+      let newCal = calendarListData.pop();
+      let newCalButton = <Button
+        onClick={() => setCalendarId(newCal.id)}
+        className="calendarButton"
+        ViewComponent={LinearGradient} // Don't forget this!
+        linearGradientProps={{
+          colors: ["#FF9800", "#F44336"],
+          start: { x: 0, y: 0.5 },
+          end: { x: 1, y: 0.5 },
+        }}
+        >
+          {newCal.summary}
+        </Button>;
+      
+      tempCalendarList.push(newCalButton);
+    }
+
+    setCalendarList(tempCalendarList);
+  }
+
+
+
+  useEffect(() => {
+    getCalendarData(accessToken, calendarId)
+  }, [calendarId])
 
   useEffect(() => {
     const accessToken = Cookies.get("access_token");
@@ -38,31 +75,12 @@ export default function Secure() {
       navigate("/");
     }
 
-    getUserDetails(accessToken);
-    getCalendars(accessToken);
+    getCalendarList(accessToken);
   }, [navigate]);
 
   return (
     <>
-      {userDetails ? (
-        <div className="user-profile">
-          <div className="card">
-            <img
-              src={userDetails.picture}
-              alt={`${userDetails.given_name}'s profile`}
-              className="profile-pic"
-            />
-            <p>Welcome</p>
-            <h1 className="name">{userDetails.name}</h1>
-            <p className="email">{userDetails.email}</p>
-            <p className="locale">{`Locale: ${userDetails.locale}`}</p>
-          </div>
-        </div>
-      ) : (
-        <div>
-          <h1>Loading...</h1>
-        </div>
-      )}
+      {!calendarList ? <ActivityIndicator size="large" color="#ffc4e4" /> : calendarList}
     </>
   );
 }

@@ -8,8 +8,8 @@ function GenerateCalColumns(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [tbody, setTbody] = useState([]);
     const tables = props.tables;
-    const openTime = new Date(); // 11:00 AM
-    openTime.setHours(11, 0, 0, 0); // we set the time to 11:00 AM
+    const openTime = new Date();
+    openTime.setHours(11, 0, 0, 0);
     let headers = [<th key="header-empty" />];
 
     for (let i = 0; i <= 540; i += 15) {
@@ -17,7 +17,7 @@ function GenerateCalColumns(props) {
         headers.push(
             <th key={`header-${i}`}>
                 {currentTime.toLocaleTimeString(navigator.language, {
-                    hour: '2-digit',
+                    hour: 'numeric',
                     minute: '2-digit'
                 })}
             </th>
@@ -55,14 +55,16 @@ function GenerateCalColumns(props) {
     }, [props.tables]);
 
     return (
-        <table>
-            <thead>
-                <tr>{headers}</tr>
-            </thead>
-            <tbody>
-                {!isLoading ? tbody : <tr><td colSpan={headers.length}>Loading!</td></tr>}
-            </tbody>
-        </table>
+        <div className="overflow-div">
+            <table className="styled-table">
+                <thead>
+                    <tr>{headers}</tr>
+                </thead>
+                <tbody>
+                    {!isLoading ? tbody : <tr><td colSpan={headers.length}>Loading!</td></tr>}
+                </tbody>
+            </table>
+        </div>
     );
 }
 
@@ -74,7 +76,7 @@ export default function Calendars() {
     function generateRowColors(events, openTime) {
         let slotAvailability = new Map();
 
-        for (let m = 0; m < 540; m += 15) {
+        for (let m = 0; m <= 540; m += 15) {
             let currentTime = addMinutes(openTime, m);
             slotAvailability.set(currentTime.getTime(), "green");
         }

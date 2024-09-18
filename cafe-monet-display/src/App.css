@@ -128,3 +128,54 @@
   letter-spacing: 1px;
   font-family: monospace;
 }
+
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: 'Courier New', Courier, monospace;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+  background-color: #ffffff;
+  color: #000000;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+  text-wrap: nowrap;
+  font-weight: bold;
+}
+
+.styled-table thead th {
+  border-style: hidden solid hidden solid;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table td:nth-child(1) {
+  position: sticky;
+  left: 0;
+  min-width: fit-content;
+  background: white;
+  color: black;
+}
+
+.overflow-div {
+  width: calc(100vw - 50px);
+  height: calc(100vh - 50px);
+  overflow: scroll;
+  border: 1px solid #ffffff;
+}
+
+.calendarButton {
+  min-width: fit-content;
+  text-wrap: nowrap;
+  font-family: 'Courier New', Courier, monospace;
+}

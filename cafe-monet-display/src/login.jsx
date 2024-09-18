@@ -13,7 +13,7 @@ export default function Login() {
     const googleClientId = "902933263655-ri7j71ajih2ming6im024d3k23muscq3.apps.googleusercontent.com";
     const targetUrl = `https://accounts.google.com/o/oauth2/auth?redirect_uri=${encodeURIComponent(
       callbackUrl
-    )}&response_type=token&client_id=${googleClientId}&scope=openid%20email%20profile%20https://www.googleapis.com/auth/calendar.events.readonly`;
+    )}&response_type=token&client_id=${googleClientId}&scope=openid%20email%20profile%20https://www.googleapis.com/auth/calendar.events.readonly%20https://www.googleapis.com/auth/calendar.readonly`;
     console.log(callbackUrl);
     window.location.href = targetUrl;
   };
@@ -40,11 +40,11 @@ export default function Login() {
           "description": "Discussion with the team.",
           "location": "Table 1",
           "start": {
-            "dateTime": "2024-09-17T14:00:00-04:00",
+            "dateTime": "2024-09-18T14:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-17T16:00:00-04:00",
+            "dateTime": "2024-09-18T16:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -64,11 +64,11 @@ export default function Login() {
           "description": "Lunch meeting with clients.",
           "location": "Table 2",
           "start": {
-            "dateTime": "2024-09-17T12:00:00-04:00",
+            "dateTime": "2024-09-18T12:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-17T13:00:00-04:00",
+            "dateTime": "2024-09-18T13:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -88,11 +88,11 @@ export default function Login() {
           "description": "Reviewing the current project status.",
           "location": "Table 3",
           "start": {
-            "dateTime": "2024-09-17T15:00:00-04:00",
+            "dateTime": "2024-09-18T15:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-17T16:00:00-04:00",
+            "dateTime": "2024-09-18T16:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -112,11 +112,11 @@ export default function Login() {
           "description": "Reviewing the current project status.",
           "location": "Table 8",
           "start": {
-            "dateTime": "2024-09-17T15:00:00-04:00",
+            "dateTime": "2024-09-18T15:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-17T18:00:00-04:00",
+            "dateTime": "2024-09-18T18:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
