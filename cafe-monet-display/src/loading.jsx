@@ -15,6 +15,7 @@ function ISODateString(d){
 
 export default function Loading() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   const [calendarId, setCalendarId] = useState();
   const [calendarList, setCalendarList] = useState([]);
 
@@ -43,35 +44,40 @@ export default function Loading() {
 
     while(calendarListData.items) {
       let newCal = calendarListData.items.pop();
-      let newCalButton = <button
-        onClick={() => setCalendarId(newCal.id)}
-        className="calendarButton"
-        >
+      if (!newCal) break;
+
+      let newCalButton = ( 
+        <button onClick={() => setCalendarId(newCal.id)} className="calendarButton">
           {newCal.summary}
-        </button>;
+        </button> 
+      );
       
       tempCalendarList.push(newCalButton);
+      console.log(`read new calendar ${newCal.summary} with id: ${newCal.id}`);
     }
 
     setCalendarList(tempCalendarList);
+    setIsLoading(!isLoading);
   }
 
   // for getting the calendar list
   useEffect(() => {
-    setCalendarId(Cookies.get("calendarId"));
     const accessToken = Cookies.get("access_token");
     if (!accessToken) {
       navigate("/");
-    } else if (!calendarId) {
-      getCalendarList(accessToken);
     } else {
-      getCalendarData(accessToken, calendarId);
+      setCalendarList([]);
+      getCalendarList(accessToken);
     }
   }, [navigate, calendarId]);
 
   return (
     <>
-      {!calendarList || calendarId == "" ? <p>Loading...</p> : calendarList}
+      {isLoading ? <p>Loading...</p> : <div class="accent-bar">
+          <ul class="accents">
+            {calendarList}
+          </ul>
+      </div>}
     </>
   );
 }
