@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Loading from './loading';
+import LoadData from './loadData';
 import Calendars from "./calendars";
 import Login from "./login";
 import './App.css';
@@ -10,7 +10,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/loading" element={<Loading />} />
+          <Route path="/loadData" element={<LoadData />} />
           <Route path="/calendars" element={<Calendars />} />
         </Routes>
       </Router>

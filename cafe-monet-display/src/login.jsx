@@ -3,11 +3,13 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import Footer from './footer';
 
 export default function Login() {
   const navigate = useNavigate();
   const [isLoggedin, setIsLoggedin] = useState(false);
 
+  // Function that takes the user to the Google auth screen
   const handleClick = () => {
     const callbackUrl = `${window.location.origin}`;
     const googleClientId = "902933263655-ri7j71ajih2ming6im024d3k23muscq3.apps.googleusercontent.com";
@@ -18,12 +20,13 @@ export default function Login() {
     window.location.href = targetUrl;
   };
 
+  // Function for setting the calendar data to test data - local testing purposes
   const handleTestClick = () => {
     const calendarData = {
       "kind": "calendar#events",
       "etag": "\"p3289gk3d2n4ca0\"",
       "summary": "Your Calendar Name",
-      "updated": "2024-08-30T12:00:00Z",
+      "updated": "2024-10-21T12:00:00Z",
       "timeZone": "America/New_York",
       "accessRole": "owner",
       "defaultReminders": [],
@@ -36,15 +39,15 @@ export default function Login() {
           "htmlLink": "https://www.google.com/calendar/event?eid=event1_id",
           "created": "2024-09-17T00:00:00Z",
           "updated": "2024-09-17T00:00:00Z",
-          "summary": "Meeting at Table #3",
+          "summary": "2 ppl Meeting at Table #3",
           "description": "Discussion with the team.",
           "location": "Table 1",
           "start": {
-            "dateTime": "2024-09-18T14:00:00-04:00",
+            "dateTime": "2024-10-22T14:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-18T16:00:00-04:00",
+            "dateTime": "2024-10-22T16:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -60,15 +63,39 @@ export default function Login() {
           "htmlLink": "https://www.google.com/calendar/event?eid=event2_id",
           "created": "2024-08-30T01:00:00Z",
           "updated": "2024-08-30T01:00:00Z",
-          "summary": "Lunch at Table #7",
+          "summary": "Lunch at Table #7 - 3 people",
           "description": "Lunch meeting with clients.",
           "location": "Table 2",
           "start": {
-            "dateTime": "2024-09-18T12:00:00-04:00",
+            "dateTime": "2024-10-22T12:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-18T13:00:00-04:00",
+            "dateTime": "2024-10-22T13:00:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "recurrence": [],
+          "reminders": {
+            "useDefault": true
+          }
+        },
+        {
+          "kind": "calendar#event",
+          "etag": "\"p3245fghrwe215\"",
+          "id": "event2_id",
+          "status": "confirmed",
+          "htmlLink": "https://www.google.com/calendar/event?eid=event2_id",
+          "created": "2024-08-30T01:00:00Z",
+          "updated": "2024-08-30T01:00:00Z",
+          "summary": "Lunch at Table #7 - 3 people",
+          "description": "Lunch meeting with clients.",
+          "location": "Table 2",
+          "start": {
+            "dateTime": "2024-10-22T12:30:00-04:00",
+            "timeZone": "America/New_York"
+          },
+          "end": {
+            "dateTime": "2024-10-22T13:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -88,11 +115,11 @@ export default function Login() {
           "description": "Reviewing the current project status.",
           "location": "Table 3",
           "start": {
-            "dateTime": "2024-09-18T15:00:00-04:00",
+            "dateTime": "2024-10-22T15:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-18T16:00:00-04:00",
+            "dateTime": "2024-10-22T16:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -108,15 +135,15 @@ export default function Login() {
           "htmlLink": "https://www.google.com/calendar/event?eid=event3_id",
           "created": "2024-08-30T02:00:00Z",
           "updated": "2024-08-30T02:00:00Z",
-          "summary": "Project Review at Table #9",
+          "summary": "Project Review at Table #9 1 people",
           "description": "Reviewing the current project status.",
           "location": "Table 8",
           "start": {
-            "dateTime": "2024-09-18T15:00:00-04:00",
+            "dateTime": "2024-10-22T15:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-09-18T18:00:00-04:00",
+            "dateTime": "2024-10-22T18:00:00-04:00",
             "timeZone": "America/New_York"
           },
           "recurrence": [],
@@ -126,7 +153,8 @@ export default function Login() {
         }
       ]
     };
-    navigate("/calendars", { state: { calendarData }} );
+
+    navigate("/calendars", {state: {calendarData}} );
   }
 
   useEffect(() => {
@@ -136,13 +164,14 @@ export default function Login() {
     if (isMatch) {
       const accessToken = isMatch[1];
       Cookies.set("access_token", accessToken);
+      Cookies.remove("calendarId")
       setIsLoggedin(true);
     }
   }, []);
 
   useEffect(() => {
     if (isLoggedin) {
-      navigate("/loading");
+      navigate("/loadData");
     }
   }, [isLoggedin, navigate]);
 
@@ -189,6 +218,7 @@ export default function Login() {
           </button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
