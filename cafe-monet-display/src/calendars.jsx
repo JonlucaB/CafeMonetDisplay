@@ -1,7 +1,6 @@
 "use=client";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie'
 import Timer from './timer';
 import Footer from './footer';
 
@@ -79,16 +78,14 @@ function GenerateTableDisplay(props) {
     }, [props.tables]);
 
     return (
-        <div className="overflow-div">
-            <table className="styled-table">
-                <thead>
-                    <tr>{headers}</tr>
-                </thead>
-                <tbody>
-                    {!isLoading ? tbody : <tr><td colSpan={headers.length}>Loading!</td></tr>}
-                </tbody>
-            </table>
-        </div>
+        <table className="styled-table">
+            <thead>
+                <tr>{headers}</tr>
+            </thead>
+            <tbody>
+                {!isLoading ? tbody : <tr><td colSpan={headers.length}>Loading!</td></tr>}
+            </tbody>
+        </table>
     );
 }
 
@@ -197,15 +194,44 @@ export default function Calendars() {
     }, navigate);
 
     return (
-        <div className="btn-container">
+        <div>
             <div>
-                {isLoading ? <p>Loading...</p> :  <GenerateTableDisplay tables={tables} rowGenerator={generateRowColors} />}
+                {isLoading ? <p>Loading...</p> : <div className='overflow-div'>
+                        <GenerateTableDisplay tables={tables} rowGenerator={generateRowColors} />
+                    </div>}
             </div>
             <div>
-                <Timer duration={10} />
-            </div>
-            <div>
-                <Footer />
+                <h2>Legend:</h2>
+                <table className='styled-table'>
+                    <thead>
+                        <tr>
+                            <td >Color</td>
+                            <td>Meaning</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style = {{backgroundColor: "green"}}/>
+                            <td tyle = {{backgroundColor: "white"}}>Open</td>
+                        </tr>
+                        <tr>
+                            <td style = {{backgroundColor: "orange"}}>2/6</td>
+                            <td tyle = {{backgroundColor: "white"}}>Occupied by 2 people</td>
+                        </tr>
+                        <tr>
+                            <td style = {{backgroundColor: "red"}}/>
+                            <td tyle = {{backgroundColor: "white"}}>Full</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <p><b>***NOTE...</b> This page automatically refreshes every <u>10 minutes</u> to stay up-to-date with all reservations</p>
+                <div>
+                    <Timer duration={10} />
+                </div>
+                <div>
+                    <Footer />
+                </div>
             </div>
         </div>
     );

@@ -110,7 +110,7 @@ export default function LoadData() {
 
   return (
     <>
-      {isLoading ? <p>Loading...</p> : <div className="btn-container">
+      {isLoading ? <p>Loading...</p> : <div className="intro-containter">
           <ul>
             {calendarList}
           </ul>

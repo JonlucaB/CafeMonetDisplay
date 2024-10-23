@@ -22,138 +22,79 @@ export default function Login() {
 
   // Function for setting the calendar data to test data - local testing purposes
   const handleTestClick = () => {
+    function pad(n){return n<10 ? '0'+n : n}
+    const currentUTCYear = new Date().getUTCFullYear();
+    const currentUTCMonth = new Date().getUTCMonth() + 1;
+    const currentUTCDay = new Date().getUTCDate();
+    
+    const buildCurrentDate = (timeStamp) => currentUTCYear+'-'+pad(currentUTCMonth)+'-'+pad(currentUTCDay)+'T'+timeStamp;
+
     const calendarData = {
-      "kind": "calendar#events",
-      "etag": "\"p3289gk3d2n4ca0\"",
-      "summary": "Your Calendar Name",
-      "updated": "2024-10-21T12:00:00Z",
-      "timeZone": "America/New_York",
-      "accessRole": "owner",
-      "defaultReminders": [],
       "items": [
         {
-          "kind": "calendar#event",
-          "etag": "\"p3245fghrwe214\"",
-          "id": "event1_id",
-          "status": "confirmed",
-          "htmlLink": "https://www.google.com/calendar/event?eid=event1_id",
-          "created": "2024-09-17T00:00:00Z",
-          "updated": "2024-09-17T00:00:00Z",
           "summary": "2 ppl Meeting at Table #3",
-          "description": "Discussion with the team.",
           "location": "Table 1",
           "start": {
-            "dateTime": "2024-10-22T14:00:00-04:00",
+            "dateTime": buildCurrentDate("12:00:00-05:00"),
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-10-22T16:00:00-04:00",
+            "dateTime": buildCurrentDate("16:00:00-05:00"),
             "timeZone": "America/New_York"
-          },
-          "recurrence": [],
-          "reminders": {
-            "useDefault": true
           }
         },
         {
-          "kind": "calendar#event",
-          "etag": "\"p3245fghrwe215\"",
-          "id": "event2_id",
-          "status": "confirmed",
-          "htmlLink": "https://www.google.com/calendar/event?eid=event2_id",
-          "created": "2024-08-30T01:00:00Z",
-          "updated": "2024-08-30T01:00:00Z",
           "summary": "Lunch at Table #7 - 3 people",
-          "description": "Lunch meeting with clients.",
           "location": "Table 2",
           "start": {
-            "dateTime": "2024-10-22T12:00:00-04:00",
+            "dateTime": buildCurrentDate("12:00:00-054:00"),
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-10-22T13:00:00-04:00",
+            "dateTime": buildCurrentDate("13:00:00-05:00"),
             "timeZone": "America/New_York"
-          },
-          "recurrence": [],
-          "reminders": {
-            "useDefault": true
-          }
+          }        
         },
         {
-          "kind": "calendar#event",
-          "etag": "\"p3245fghrwe215\"",
-          "id": "event2_id",
-          "status": "confirmed",
-          "htmlLink": "https://www.google.com/calendar/event?eid=event2_id",
-          "created": "2024-08-30T01:00:00Z",
-          "updated": "2024-08-30T01:00:00Z",
           "summary": "Lunch at Table #7 - 3 people",
-          "description": "Lunch meeting with clients.",
           "location": "Table 2",
           "start": {
-            "dateTime": "2024-10-22T12:30:00-04:00",
+            "dateTime": buildCurrentDate("12:30:00-05:00"),
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-10-22T13:00:00-04:00",
+            "dateTime": buildCurrentDate("13:00:00-05:00"),
             "timeZone": "America/New_York"
-          },
-          "recurrence": [],
-          "reminders": {
-            "useDefault": true
           }
         },
         {
-          "kind": "calendar#event",
-          "etag": "\"p3245fghrwe216\"",
-          "id": "event3_id",
-          "status": "confirmed",
-          "htmlLink": "https://www.google.com/calendar/event?eid=event3_id",
-          "created": "2024-08-30T02:00:00Z",
-          "updated": "2024-08-30T02:00:00Z",
           "summary": "Project Review at Table #9",
-          "description": "Reviewing the current project status.",
           "location": "Table 3",
           "start": {
-            "dateTime": "2024-10-22T15:00:00-04:00",
+            "dateTime": buildCurrentDate("15:00:00-05:00"),
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-10-22T16:00:00-04:00",
+            "dateTime": buildCurrentDate("16:00:00-05:00"),
             "timeZone": "America/New_York"
-          },
-          "recurrence": [],
-          "reminders": {
-            "useDefault": true
           }
         },
         {
-          "kind": "calendar#event",
-          "etag": "\"p3245fghrwe216\"",
-          "id": "event3_id",
-          "status": "confirmed",
-          "htmlLink": "https://www.google.com/calendar/event?eid=event3_id",
-          "created": "2024-08-30T02:00:00Z",
-          "updated": "2024-08-30T02:00:00Z",
           "summary": "Project Review at Table #9 1 people",
-          "description": "Reviewing the current project status.",
           "location": "Table 8",
           "start": {
-            "dateTime": "2024-10-22T15:00:00-04:00",
+            "dateTime": buildCurrentDate("15:00:00-05:00"),
             "timeZone": "America/New_York"
           },
           "end": {
-            "dateTime": "2024-10-22T18:00:00-04:00",
+            "dateTime": buildCurrentDate("18:00:00-05:00"),
             "timeZone": "America/New_York"
-          },
-          "recurrence": [],
-          "reminders": {
-            "useDefault": true
           }
         }
       ]
     };
 
+    console.log("using dummy data:\n"+JSON.stringify(calendarData.items));
     navigate("/calendars", {state: {calendarData}} );
   }
 
@@ -177,13 +118,13 @@ export default function Login() {
 
   return (
     <div className="root">
-      <div>
-        <div className="btn-container">
-          <button className="btn btn-primary" onClick={handleTestClick}>
-
-          </button>
-        </div>
-        <h1>Log in with Google</h1>
+      <div className="intro-container">
+        <h1>Welcome to the Cafe Monet Reservation Display App!</h1>
+        <p>If you are using this app for the first time, all you have to do is login with Google using the button below, and allow this app to request information about all the calendars associated with your account.</p>
+        <p>This app does not send your calendar data to any third parties, nor does it host any ad services whatsoever. It simply serves as a script that helps in displaying reservations made to Cafe Monet, located in Austin, TX and Bastrop, TX.</p>
+        <p>After you log in, you will be prompted with a list of buttons with calendar names on it. Please click the button that corresponds to the calendar that holds the table reservations, as that will be displayed in the page that follows it.</p>
+        <p>If you have any questions, feel free to reach out to the developer of this app: <a href= "mailto: jonlucabiagini@gmail.com"> jonlucabiagini@gmail.com</a>.</p>
+        <h2>Log in with Google</h2>
         <div className="btn-container">
           <button className="btn btn-primary" onClick={handleClick}>
             <svg
@@ -216,9 +157,12 @@ export default function Login() {
             </svg>
             Log in with Google
           </button>
+          <button className="btn btn-primary" onClick={handleTestClick}>
+            Click me to see a demo of the app with dummy-data!
+          </button>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 }

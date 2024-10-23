@@ -2,15 +2,11 @@ import React from 'react';
 import Popup from 'reactjs-popup';
 
 export default function Footer() {
-    const handleClick = () => {
-
-    }
-
     return (
         <div>
             <br />
            <Popup trigger=
-                {<button>Privacy Policy</button>}
+                {<button className='calendarButton'>Privacy Policy</button>}
                 modal nested>
                     {
                         close => (
