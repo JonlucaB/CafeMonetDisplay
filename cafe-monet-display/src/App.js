@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import LoadData from './loadData';
-import Calendars from "./calendars";
-import Login from "./login";
+import LoadData from './components/loadData';
+import Calendars from "./containers/calendars";
+import Login from "./containers/login";
 import './App.css';
 
 function App() {

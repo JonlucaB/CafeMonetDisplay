@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import Footer from "./footer";
+import Footer from "../display/footer";
 
 const ACCESS_TOKEN = "access_token";
 const CALENDARID = "calendarId";

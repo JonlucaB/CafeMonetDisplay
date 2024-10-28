@@ -1,22 +1,8 @@
-"use=client";
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Timer from './timer';
-import Footer from './footer';
+import CalendarsDisplay from "../display/calendarsDisplay";
 
 const addMinutes = (date, minutes) => new Date(new Date(date).getTime() + (minutes * 60000));
-const timeMarkers = [
-    "11:00 AM", "11:15 AM", "11:30 AM", "11:45 AM", 
-    "12:00 PM", "12:15 PM", "12:30 PM", "12:45 PM", 
-    "1:00 PM", "1:15 PM", "1:30 PM", "1:45 PM", 
-    "2:00 PM", "2:15 PM", "2:30 PM", "2:45 PM", 
-    "3:00 PM", "3:15 PM", "3:30 PM", "3:45 PM", 
-    "4:00 PM", "4:15 PM", "4:30 PM", "4:45 PM", 
-    "5:00 PM", "5:15 PM", "5:30 PM", "5:45 PM", 
-    "6:00 PM", "6:15 PM", "6:30 PM", "6:45 PM", 
-    "7:00 PM", "7:15 PM", "7:30 PM", "7:45 PM", 
-    "8:00 PM"
-];
 
 const tableOccupancies = new Map([
     [1, 2],
@@ -30,71 +16,12 @@ const tableOccupancies = new Map([
     [9, 6]
 ]);
 
-function GenerateTableDisplay(props) {
-    const [isLoading, setIsLoading] = useState(true);
-    const [tbody, setTbody] = useState([]);
-    const tables = props.tables;
-    const openTime = new Date();
-    openTime.setHours(11, 0, 0, 0);
-
-    // Create the headers part of the table
-    let headers = [<th key="header-empty" />];
-    timeMarkers.forEach(mark => {
-        headers.push(
-            <th key={`header-${mark}`}>
-                {mark}
-            </th>
-        );
-    });
-
-    useEffect(() => {
-        setIsLoading(true);
-        let newRows = [];
-
-        for (let i = 1; i < 10; i++) {
-            let row;
-            if (tables.has(i)) {
-                // If there are reservations for the table
-                row = props.rowGenerator(i, tables.get(i), openTime);
-            } else {
-                // If there are no reservations for the table
-                console.log("There were no reservations for Table #" + i);
-                row = props.rowGenerator(i, [], openTime);
-            }
-
-            const newRow = (
-                <tr key={i}>
-                    <td>Table #{i}</td>
-                    {row.map((cell, index) => (
-                        <td key={index} style={{ backgroundColor: cell.color }}>{cell.occupancy < tableOccupancies.get(i) && cell.occupancy > 0 ? cell.occupancy+'/'+tableOccupancies.get(i) : ''}</td>
-                    ))}
-                </tr>
-            );
-            newRows.push(newRow);
-        }
-
-        setTbody(newRows);
-        setIsLoading(false);
-    }, [props.tables]);
-
-    return (
-        <table className="styled-table">
-            <thead>
-                <tr>{headers}</tr>
-            </thead>
-            <tbody>
-                {!isLoading ? tbody : <tr><td colSpan={headers.length}>Loading!</td></tr>}
-            </tbody>
-        </table>
-    );
-}
-
 export default function Calendars() {
     const navigate = useNavigate();
     const location = useLocation();
     const events = location.state.calendarData;
-    const [isLoading, setIsLoading] = useState(true);
     const [tables, setTables] = useState(new Map());
+    const [isLoading, setIsLoading] = useState(false);
 
     function generateRowColors(tableNum, events, openTime) {
         let slotAvailability = new Map();
@@ -190,49 +117,13 @@ export default function Calendars() {
         setTables(tempTables);
         setIsLoading(false);
 
-        return (() => window.history.replaceState({}, ''));
-    }, navigate);
+        return (() => {
+            window.history.replaceState({}, '');
+            setTables(null);
+        });
+    }, [navigate]);
 
     return (
-        <div>
-            <div>
-                {isLoading ? <p>Loading...</p> : <div className='overflow-div'>
-                        <GenerateTableDisplay tables={tables} rowGenerator={generateRowColors} />
-                    </div>}
-            </div>
-            <div>
-                <h2>Legend:</h2>
-                <table className='styled-table'>
-                    <thead>
-                        <tr>
-                            <td >Color</td>
-                            <td>Meaning</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style = {{backgroundColor: "green"}}/>
-                            <td tyle = {{backgroundColor: "white"}}>Open</td>
-                        </tr>
-                        <tr>
-                            <td style = {{backgroundColor: "orange"}}>2/6</td>
-                            <td tyle = {{backgroundColor: "white"}}>Occupied by 2 people</td>
-                        </tr>
-                        <tr>
-                            <td style = {{backgroundColor: "red"}}/>
-                            <td tyle = {{backgroundColor: "white"}}>Full</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br />
-                <p><b>***NOTE...</b> This page automatically refreshes every <u>10 minutes</u> to stay up-to-date with all reservations</p>
-                <div>
-                    <Timer duration={10} />
-                </div>
-                <div>
-                    <Footer />
-                </div>
-            </div>
-        </div>
+        <CalendarsDisplay tables={tables} rowGenerator={generateRowColors} loading={isLoading}/>
     );
 }
